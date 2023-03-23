@@ -15,18 +15,7 @@ public class RoomNodeTypeSO : ScriptableObject
     [Header("One Type Should be A Corridor")]
     #endregion Header
     public bool isCorridor;
-    #region Header
-    [Header("One Type Should be A CorridorNS")]
-    #endregion Header
-    public bool isCorridorNS;
-    #region Header
-    [Header("One Type Should be A CorridorEW")]
-    #endregion Header
-    public bool isCorridorEW;
-    #region Header
-    [Header("One Type Should be An Entrance")]
-    #endregion Header
-    public bool isEntranceW;
+
     #region Header
     [Header("One Type Should be A Boss Room")]
     #endregion Header
