@@ -2,17 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HelperUtilities : MonoBehaviour
+public static class HelperUtilities 
 {
-    // Start is called before the first frame update
-    void Start()
+    /// <summary></summary>
+    /// Empty string debug check
+    /// </summary>
+    
+    public static bool ValidateCheckEmptyString(Object thisObject, string fieldName, string stringToCheck)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (stringToCheck == "")
+        {
+            {
+                Debug.Log(fieldName + " is empty and must contain a value in object " + thisObject.name.ToString());
+                return true;
+            }
+            return false;
+        }
     }
 }
