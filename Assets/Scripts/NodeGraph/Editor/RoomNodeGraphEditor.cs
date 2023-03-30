@@ -57,7 +57,7 @@ public class RoomNodeGraphEditor : EditorWindow
     /// <summary>
     /// Draw Editor GUI
     /// </summary>
-   
+
 
     private void OnGUI()
     {
@@ -85,7 +85,7 @@ public class RoomNodeGraphEditor : EditorWindow
     /// <summary>
     /// Process Room Node Graph Events
     /// </summary>
-    
+
     private void ProcessRoomNodeGraphEvents(Event currentEvent)
     {
         switch (currentEvent.type)
@@ -121,4 +121,48 @@ public class RoomNodeGraphEditor : EditorWindow
         menu.AddItem(new GUIContent("Create Room Node"), false, CreateRoomNode, mousePosition);
         menu.ShowAsContext();
     }
+    /// <summary>
+    /// Create a room node at the mouse position
+    /// </summary>
+    /// <param name="mousePositionObject"></param>
+    private void CreateRoomNode(object mousePositionObject)
+    {
+        CreateRoomNode(mousePositionObject, roomNodeTypeList.list.Find(x => x.isNone));
+    }
+
+    /// <summary>
+    /// Create a roomNode at the mouse position - overlooked to also pass in RoomNodeType
+    /// </summary>
+
+    private void CreateRoomNode(object mousePositionObject, RoomNodeTypeSO roomNodeType)
+    {
+        Vector2 mousePosition = (Vector2)mousePositionObject;
+        // create room node scriptable object asset
+        RoomNodeSO roomNode = ScriptableObject.CreateInstance<RoomNodeSO>();
+
+        // add room node to current room node graph room node list
+        currentRoomNodeGraph.roomNodeList.Add(roomNode);
+
+        // set Room node values
+        roomNode.Initialise(new Rect(mousePosition, new Vector2(nodeWidth, nodeHeight)), currentRoomNodeGraph, roomNodeType);
+
+        // add room node to room node graph scriptable object asset database
+        AssetDatabase.AddObjectToAsset(roomNode, currentRoomNodeGraph);
+
+        AssetDatabase.SaveAssets();
+    }
+
+    /// <summary>
+    /// Draw Room Nodes in the graph window
+    /// </summary>
+    private void DrawRoomNodes()
+    {
+        // Loop through all room nodes and draw them
+        foreach (RoomNodeSO roomNode in currentRoomNodeGraph.roomNodeList)
+        {
+            roomNode.Draw(roomNodeStyle);
+        }
+        GUI.changed = true;
+    }
+
 }
