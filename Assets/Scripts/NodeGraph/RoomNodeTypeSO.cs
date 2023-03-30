@@ -15,15 +15,27 @@ public class RoomNodeTypeSO : ScriptableObject
     [Header("One Type Should be A Corridor")]
     #endregion Header
     public bool isCorridor;
-
     #region Header
-    [Header("One Type Should be A Boss Room")]
+    [Header("One Type Should Be A CorridorNS")]
+    #endregion Header
+    public bool isCorridorNS;
+    #region Header
+    [Header("One Type Should Be A CorrdiorEW")]
+    #endregion Header
+    public bool isCorridorEW;
+    #region Header
+    [Header("One Type Should Be An Entrance")]
+    #endregion Header
+    public bool isEntrance;
+    #region Header
+    [Header("One Type Should Be A Boss Room")]
     #endregion Header
     public bool isBossRoom;
     #region Header
-    [Header("One Type Should be None (Unassigned")]
+    [Header("One Type Should Be None (Unassigned")]
     #endregion Header
     public bool isNone;
+
     #region Validation
 #if UNITY_EDITOR
     private void OnValidate()

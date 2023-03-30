@@ -6,9 +6,7 @@ using UnityEngine;
 
 public class RoomNodeGraphSO : ScriptableObject
 {
-    [HideInInspector] public RoomNodeGraphListSO roomNodeTypeList;
+    [HideInInspector] public RoomNodeTypeListSO roomNodeTypeList;
     [HideInInspector] public List<RoomNodeSO> roomNodeList = new List<RoomNodeSO>();
     [HideInInspector] public Dictionary<string, RoomNodeSO> roomNodeDictionary = new Dictionary<string, RoomNodeSO>();
-
-
 }
