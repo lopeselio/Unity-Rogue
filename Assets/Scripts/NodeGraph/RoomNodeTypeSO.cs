@@ -32,7 +32,7 @@ public class RoomNodeTypeSO : ScriptableObject
     #endregion Header
     public bool isBossRoom;
     #region Header
-    [Header("One Type Should Be None (Unassigned")]
+    [Header("One Type Should Be None (Unassigned)")]
     #endregion Header
     public bool isNone;
 

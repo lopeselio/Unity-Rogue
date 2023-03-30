@@ -2,17 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RoomNodeSO : MonoBehaviour
+public class RoomNodeSO : ScriptableObject
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [HideInInspector] public string id;
+    [HideInInspector] public List<string> parentRoomNodeIDList = new List<string>();
+    [HideInInspector] public List<string> childRoomNodeIDList = new List<string>();
+    [HideInInspector] public RoomNodeGraphSO roomNodeGraph;
+    public RoomNodeTypeSO roomNodeType;
+    [HideInInspector] public RoomNodeTypeListSO roomNodeTypeList;
 }
