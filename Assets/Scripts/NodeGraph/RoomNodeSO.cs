@@ -16,6 +16,8 @@ public class RoomNodeSO : ScriptableObject
     // code runs only in Unity Editor
 #if UNITY_EDITOR
     [HideInInspector] public Rect rect;
+    [HideInInspector] public bool isLeftClickDragging = false;
+    [HideInInspector] public bool isSelected = false;
     /// <summary>
     /// Initialise node
     /// </summary>
@@ -66,6 +68,33 @@ public class RoomNodeSO : ScriptableObject
             }
         }
         return roomArray;
+    }
+
+    /// <summary>
+    /// Process events for node
+    /// </summary>
+    public void ProcessEvents(Event currentEvent)
+    {
+        switch (currentEvent.type)
+        {
+            // Process Mouse Down Events
+            case EventType.MouseDown:
+                ProcessMouseDownEvent(currentEvent);
+                break;
+
+            //Process Mouse Up events
+            case EventType.MouseUp:
+                ProcessMouseUpEvent(currentEvent);
+                break;
+
+            // Process Mouse Drag Events
+            case EventType.MouseDrag:
+                ProcessMouseDragEvent(currentEvent);
+                break;
+
+            default:
+                break;
+        }
     }
 #endif
 #endregion Editor Code
