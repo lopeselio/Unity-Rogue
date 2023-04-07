@@ -96,6 +96,95 @@ public class RoomNodeSO : ScriptableObject
                 break;
         }
     }
+
+    /// <summary>
+    /// Process mouse down event
+    /// </summary>
+    private void ProcessMouseDownEvent(Event currentEvent)
+    {
+        if(currentEvent.button == 0)
+        {
+            ProcessLeftClickDownEvent();
+        }
+    }
+
+    /// <summary>
+    /// Process left click down event
+    /// </summary>
+    private void ProcessLeftClickDownEvent()
+    {
+        // Selection.activeObject = this;
+
+        // Toggle Node Selection
+        if (isSelected == true)
+        {
+            isSelected = false;
+        }
+        else
+        {
+            isSelected = true;
+        }
+    }
+
+    /// <summary>
+    /// Process mouse up event
+    /// </summary>
+    
+    private void ProcessMouseUpEvent(Event currentEvent)
+    {
+        // if left click up
+        if (currentEvent.button == 0)
+        {
+            ProcessLeftClickUpEvent();
+        }
+    }
+
+    /// <summary>
+    /// Process left click up event
+    /// </summary>
+    
+    private void ProcessLeftClickUpEvent()
+    {
+        if (isLeftClickDragging)
+        {
+            isLeftClickDragging = false;
+        }
+    }
+
+    /// <summary>
+    /// Process mouse drag event
+    /// </summary>
+    
+    private void ProcessMouseDragEvent(Event currentEvent)
+    {
+        // process left click drag event
+        if (currentEvent.button == 0)
+        {
+            ProcessLeftMouseDragEvent(currentEvent);
+        }
+    }
+
+    /// <summary>
+    /// Process left mouse drag event
+    /// </summary>
+    
+    private void ProcessLeftMouseDragEvent(Event currentEvent)
+    {
+        isLeftClickDragging = true;
+
+        DragNode(currentEvent.delta);
+        GUI.changed = true;
+    }
+
+    /// <summary>
+    ///  Drag node
+    /// </summary>
+    
+    public void DragNode(Vector2 delta)
+    {
+        rect.position += delta;
+        EditorUtility.SetDirty(this);
+    }
 #endif
 #endregion Editor Code
 }
