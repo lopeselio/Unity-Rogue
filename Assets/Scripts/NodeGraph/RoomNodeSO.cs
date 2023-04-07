@@ -113,7 +113,7 @@ public class RoomNodeSO : ScriptableObject
     /// </summary>
     private void ProcessLeftClickDownEvent()
     {
-        // Selection.activeObject = this;
+        Selection.activeObject = this;
 
         // Toggle Node Selection
         if (isSelected == true)
