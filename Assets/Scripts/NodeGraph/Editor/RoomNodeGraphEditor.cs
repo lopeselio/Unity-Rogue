@@ -74,6 +74,9 @@ public class RoomNodeGraphEditor : EditorWindow
             // Process Events
             ProcessEvents(Event.current);
 
+            //  Draw connctions between room nodes
+            DrawRoomNodeConnections();
+
             // Draw Room Nodes
             DrawRoomNodes();
         }
@@ -203,6 +206,9 @@ public class RoomNodeGraphEditor : EditorWindow
         AssetDatabase.AddObjectToAsset(roomNode, currentRoomNodeGraph);
 
         AssetDatabase.SaveAssets();
+
+        // refresh graph node dictionary 
+        currentRoomNodeGraph.OnValidate();
     }
 
     /// <summary>
@@ -275,6 +281,46 @@ public class RoomNodeGraphEditor : EditorWindow
         GUI.changed = true;
     }
 
+    /// <summary>
+    /// Draw connections in the graoh window between nodes
+    /// </summary>
+
+    private void DrawRoomNodeConnections()
+    {
+        // Loop through all the room nodes
+        foreach(RoomNodeSO roomNode in currentRoomNodeGraph.roomNodeList)
+        {
+            if (roomNode.childRoomNodeIDList.Count > 0)
+            {
+                // loop through all the child room nodes
+                foreach (string childRoomNodeID in roomNode.childRoomNodeIDList)
+                {
+                    // get child room node from dictionary
+                    if (currentRoomNodeGraph.roomNodeDictionary.ContainsKey(childRoomNodeID))
+                    {
+                        DrawConnectionLine(roomNode, currentRoomNodeGraph.roomNodeDictionary[childRoomNodeID]);
+
+                        GUI.changed = true;
+                    }
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// draw connection line between the parent room node and child room node
+    /// </summary>
+    
+    private void DrawConnectionLine(RoomNodeSO parentRoomNode, RoomNodeSO childRoomNode)
+    {
+        // get start and end position
+        Vector2 startPosition = parentRoomNode.rect.center;
+        Vector2 endPosition = childRoomNode.rect.center;
+
+        // Draw Line
+        Handles.DrawBezier(startPosition, endPosition, startPosition, endPosition, Color.white, null, connectingLineWidth);
+        GUI.changed = true;
+    }
 
 
     /// <summary>
