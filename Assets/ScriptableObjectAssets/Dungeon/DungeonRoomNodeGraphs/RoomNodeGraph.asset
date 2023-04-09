@@ -143,9 +143,9 @@ MonoBehaviour:
   roomNodeTypeList: {fileID: 11400000, guid: deadf4a8ed3d701448147397c091acb2, type: 2}
   rect:
     serializedVersion: 2
-    x: 1018
-    y: 433
+    x: 1086
+    y: 388
     width: 160
     height: 75
   isLeftClickDragging: 0
-  isSelected: 0
+  isSelected: 1

@@ -86,8 +86,8 @@ public class RoomNodeGraphEditor : EditorWindow
             currentRoomNode = IsMouseOverRoomNode(currentEvent);
         }
 
-        // if mouse is not over a room node 
-        if (currentRoomNode == null) 
+        // if mouse is not over a room node or we are currently dragging a line from the room node then process graph events
+        if (currentRoomNode == null || currentRoomNodeGraph.roomNodeToDrawLineFrom != null) 
         {
             ProcessRoomNodeGraphEvents(currentEvent);
         }
@@ -121,6 +121,11 @@ public class RoomNodeGraphEditor : EditorWindow
             // Process Mouse Down Events
             case EventType.MouseDown:
                 ProcessMouseDownEvent(currentEvent);
+                break;
+
+            // Process Mouse Drag Event
+            case EventType.MouseDrag:
+                ProcessMouseDragEvent(currentEvent);
                 break;
             default:
                 break;
@@ -179,6 +184,40 @@ public class RoomNodeGraphEditor : EditorWindow
 
         AssetDatabase.SaveAssets();
     }
+
+    /// <summary>
+    /// Process Mouse Drag Event
+    /// </summary>
+    
+    private void ProcessMouseDragEvent(Event currentEvent)
+    {
+        // process right click drag event - draw line
+        if (currentEvent.button == 1)
+        {
+            ProcessRightMouseDragEvent(currentEvent);
+        }
+    }
+
+    /// <summary>
+    /// Process Right mouse drag event - draw line
+    /// </summary>
+    private void ProcessRightMouseDragEvent(Event currentEvent)
+    {
+        if (currentRoomNodeGraph.roomNodeToDrawLineFrom != null)
+        {
+            DragConnectingLine(currentEvent.delta);
+            GUI.changed = true;
+        }
+    }
+
+    /// <summary>
+    /// Draf connecting line from room node
+    /// </summary>
+    public void DragConnectingLine(Vector2 delta)
+    {
+        currentRoomNodeGraph.linePosition += delta;
+    }
+
 
     /// <summary>
     /// Draw Room Nodes in the graph window
