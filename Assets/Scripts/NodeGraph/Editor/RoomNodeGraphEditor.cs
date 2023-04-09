@@ -17,6 +17,8 @@ public class RoomNodeGraphEditor : EditorWindow
 
     // connecting line values
     private const float connectingLineWidth = 3f;
+    private const float connectingLineArrowSize = 6f;
+
 
 
     [MenuItem("Room Node Graph Editor", menuItem = "Window/Dungeon Editor/Room Node Graph Editor")]
@@ -316,6 +318,23 @@ public class RoomNodeGraphEditor : EditorWindow
         // get start and end position
         Vector2 startPosition = parentRoomNode.rect.center;
         Vector2 endPosition = childRoomNode.rect.center;
+
+        // calcluate the midway point 
+        Vector2 midPosition = (endPosition + startPosition) / 2f;
+
+        // Vector from start to end position of line
+        Vector2 direction = endPosition - startPosition;
+
+        // calculate the normalised perpendicular position from the mid point
+        Vector2 arrowTailPoint1 = midPosition - new Vector2(-direction.y, direction.x).normalized * connectingLineArrowSize;
+        Vector2 arrowTailPoint2 = midPosition + new Vector2(-direction.y, direction.x).normalized * connectingLineArrowSize;
+
+        // calculate mid point offset position for arrow head
+        Vector2 arrowHeadPoint = midPosition + direction.normalized * connectingLineArrowSize;
+
+        // Draw arrow
+        Handles.DrawBezier(arrowHeadPoint, arrowTailPoint1, arrowHeadPoint, arrowTailPoint1, Color.white, null, connectingLineWidth);
+        Handles.DrawBezier(arrowHeadPoint, arrowTailPoint1, arrowHeadPoint, arrowTailPoint2, Color.white, null, connectingLineWidth);
 
         // Draw Line
         Handles.DrawBezier(startPosition, endPosition, startPosition, endPosition, Color.white, null, connectingLineWidth);
