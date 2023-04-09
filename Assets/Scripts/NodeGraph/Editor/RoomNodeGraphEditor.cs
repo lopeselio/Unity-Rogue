@@ -137,10 +137,16 @@ public class RoomNodeGraphEditor : EditorWindow
                 ProcessMouseDownEvent(currentEvent);
                 break;
 
+            // Process Mouse Up Event 
+            case EventType.MouseUp:
+                ProcessMouseUpEvent(currentEvent);
+                break;
+
             // Process Mouse Drag Event
             case EventType.MouseDrag:
                 ProcessMouseDragEvent(currentEvent);
                 break;
+
             default:
                 break;
         }
@@ -200,6 +206,19 @@ public class RoomNodeGraphEditor : EditorWindow
     }
 
     /// <summary>
+    /// process mouse up events
+    /// </summary>
+    private void ProcessMouseUpEvent(Event currentEvent)
+    {
+        // if releasing the right mouse button and currently dragging a line
+        if (currentEvent.button == 1 && currentRoomNodeGraph.roomNodeToDrawLineFrom != null)
+        {
+            ClearLineDrag();
+        }
+    }
+
+
+    /// <summary>
     /// Process Mouse Drag Event
     /// </summary>
     
@@ -231,6 +250,18 @@ public class RoomNodeGraphEditor : EditorWindow
     {
         currentRoomNodeGraph.linePosition += delta;
     }
+
+    /// <summary>
+    /// Clear line drag from a room node
+    /// </summary>
+    
+    private void ClearLineDrag()
+    {
+        currentRoomNodeGraph.roomNodeToDrawLineFrom = null;
+        currentRoomNodeGraph.linePosition = Vector2.zero;
+        GUI.changed = true;
+    }
+
 
 
     /// <summary>
