@@ -15,6 +15,9 @@ public class RoomNodeGraphEditor : EditorWindow
     private const int nodePadding = 25;
     private const int nodeBorder = 12;
 
+    // connecting line values
+    private const float connectingLineWidth = 3f;
+
 
     [MenuItem("Room Node Graph Editor", menuItem = "Window/Dungeon Editor/Room Node Graph Editor")]
 
@@ -65,6 +68,9 @@ public class RoomNodeGraphEditor : EditorWindow
         // if scriptable object of type RoomNodeGraphSO has been selected then process
         if (currentRoomNodeGraph != null)
         {
+            // Draw dragged lined if being dragged
+            DrawDraggedLine();
+
             // Process Events
             ProcessEvents(Event.current);
 
@@ -78,6 +84,14 @@ public class RoomNodeGraphEditor : EditorWindow
         }
     }
 
+    private void DrawDraggedLine()
+    {
+        if(currentRoomNodeGraph.linePosition != Vector2.zero)
+        {
+            // Draw line from node to line postion
+            Handles.DrawBezier(currentRoomNodeGraph.roomNodeToDrawLineFrom.rect.center, currentRoomNodeGraph.linePosition, currentRoomNodeGraph.roomNodeToDrawLineFrom.rect.center, currentRoomNodeGraph.linePosition, Color.white, null, connectingLineWidth);
+        }
+    }
     private void ProcessEvents(Event currentEvent)
     {
         // get room node that mouse is over and if it is null or not currently being dragged
