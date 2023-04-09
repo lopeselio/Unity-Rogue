@@ -210,6 +210,7 @@ public class RoomNodeGraphEditor : EditorWindow
     /// </summary>
     private void ProcessMouseUpEvent(Event currentEvent)
     {
+        // set up parent child relationship
         // if releasing the right mouse button and currently dragging a line
         if (currentEvent.button == 1 && currentRoomNodeGraph.roomNodeToDrawLineFrom != null)
         {
