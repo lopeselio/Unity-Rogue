@@ -185,6 +185,11 @@ public class RoomNodeGraphEditor : EditorWindow
     /// <param name="mousePositionObject"></param>
     private void CreateRoomNode(object mousePositionObject)
     {
+        // if current node graph is empty then add entrance room node first
+        if (currentRoomNodeGraph.roomNodeList.Count == 0)
+        {
+            CreateRoomNode(new Vector2(200f, 200f), roomNodeTypeList.list.Find(x => x.isEntrance));
+        }
         CreateRoomNode(mousePositionObject, roomNodeTypeList.list.Find(x => x.isNone));
     }
 
