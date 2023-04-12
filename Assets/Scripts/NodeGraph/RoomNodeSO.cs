@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class RoomNodeSO : ScriptableObject
 {
-    [HideInInspector] public string id;
-    [HideInInspector] public List<string> parentRoomNodeIDList = new List<string>();
-    [HideInInspector] public List<string> childRoomNodeIDList = new List<string>();
+    public string id;
+    public List<string> parentRoomNodeIDList = new List<string>();
+    public List<string> childRoomNodeIDList = new List<string>();
     [HideInInspector] public RoomNodeGraphSO roomNodeGraph;
     public RoomNodeTypeSO roomNodeType;
     [HideInInspector] public RoomNodeTypeListSO roomNodeTypeList;
@@ -216,8 +216,73 @@ public class RoomNodeSO : ScriptableObject
     /// </summary>
     public bool AddChildRoomNodeIDToRoomNode(string childID)
     {
-        childRoomNodeIDList.Add(childID);
-        return true;
+        // Validation checks 
+        // Check if child node can be added validly to parent
+        if (IsChildRoomValid(childID))
+        {
+            childRoomNodeIDList.Add(childID);
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Check the child node can be validly added to the parent node - return true if it can otherwise return false
+    /// </summary>
+    public bool IsChildRoomValid(string childID)
+    {
+        bool isConnectedBossNodeAlready = false;
+        // Check if there is already a connected boss room in the node graph
+        foreach(RoomNodeSO roomNode in roomNodeGraph.roomNodeList)
+        {
+            if (roomNode.roomNodeType.isBossRoom && roomNode.parentRoomNodeIDList.Count > 0)
+            {
+                isConnectedBossNodeAlready = true;
+            }
+        }
+
+        // if the child node has a type of boss room and there is already a connected boss room node then return false
+        if (roomNodeGraph.GetRoomNode(childID).roomNodeType.isBossRoom && isConnectedBossNodeAlready)
+            return false;
+
+        // if child node is none then return false as well
+        if (roomNodeGraph.GetRoomNode(childID).roomNodeType.isNone)
+            return false;
+
+        // if the node already has a child with this child ID return false
+        if (childRoomNodeIDList.Contains(childID))
+            return false;
+
+        // id nodeID and childID are same then return false
+        if(id == childID)
+        {
+            return false;
+        }
+
+        // id childID is already in the parentID list return false
+        if (parentRoomNodeIDList.Contains(childID))
+        {
+            return false;
+        }
+
+        // if child node already has a parent then return false
+        if (roomNodeGraph.GetRoomNode(childID).parentRoomNodeIDList.Count > 0)
+        {
+            return false;
+        }
+
+        // if child is corridor and this node is a corridor return false
+        if (roomNodeGraph.GetRoomNode(childID).roomNodeType.isCorridor && roomNodeType.isCorridor)
+            return false;
+
+        // if child is not a corridor and this node is not a corridor then return false
+        if (!roomNodeGraph.GetRoomNode(childID).roomNodeType.isCorridor && !roomNodeType.isCorridor)
+            return false;
+
+        // if while adding corrdidor check that this node has < the maximum permitted child corridors
+        if (roomNodeGraph.GetRoomNode(childID).roomNodeType.isCorridor && childRoomNodeIDList.Count >= Settings.maxChildCorridors)
+            return false;
     }
 
     /// <summary>
