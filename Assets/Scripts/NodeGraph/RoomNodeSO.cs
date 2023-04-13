@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class RoomNodeSO : ScriptableObject
 {
-    public string id;
-    public List<string> parentRoomNodeIDList = new List<string>();
-    public List<string> childRoomNodeIDList = new List<string>();
+    [HideInInspector] public string id;
+    [HideInInspector] public List<string> parentRoomNodeIDList = new List<string>();
+    [HideInInspector] public List<string> childRoomNodeIDList = new List<string>();
     [HideInInspector] public RoomNodeGraphSO roomNodeGraph;
     public RoomNodeTypeSO roomNodeType;
     [HideInInspector] public RoomNodeTypeListSO roomNodeTypeList;
@@ -283,6 +283,16 @@ public class RoomNodeSO : ScriptableObject
         // if while adding corrdidor check that this node has < the maximum permitted child corridors
         if (roomNodeGraph.GetRoomNode(childID).roomNodeType.isCorridor && childRoomNodeIDList.Count >= Settings.maxChildCorridors)
             return false;
+
+        // if the child room is an entrance then return false - the entrance must be always top level parent node
+        if (roomNodeGraph.GetRoomNode(childID).roomNodeType.isEntrance)
+            return false;
+
+        // if adding a room to a corridor check that this corridor node doesn't already have a room added 
+        if (!roomNodeGraph.GetRoomNode(childID).roomNodeType.isCorridor && childRoomNodeIDList.Count > 0)
+            return false;
+
+        return true;
     }
 
     /// <summary>
