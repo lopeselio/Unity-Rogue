@@ -312,11 +312,23 @@ public class RoomNodeSO : ScriptableObject
     {
         if (childRoomNodeIDList.Contains(childID))
         {
+            childRoomNodeIDList.Remove(childID);
             return true;
         }
         return false;
     }
-    
+
+    public bool RemoveParentRoomNodeIDFromRoomNode(string parentID)
+    {
+        // if node contains the parent ID then remove it
+        if (parentRoomNodeIDList.Contains(parentID))
+        {
+            parentRoomNodeIDList.Remove(parentID);
+            return true;
+        }
+        return false;
+    }
+
 #endif
-#endregion Editor Code
+    #endregion Editor Code
 }
