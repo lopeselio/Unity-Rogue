@@ -304,6 +304,19 @@ public class RoomNodeSO : ScriptableObject
         return true;
     }
 
+    /// <summary>
+    /// Remove childID from the node (returns true if the node has been removed, false otherwise)
+    /// </summary>
+    /// 
+    public bool RemoveChildRoomNodeIDFromRoomNode(string childID)
+    {
+        if (childRoomNodeIDList.Contains(childID))
+        {
+            return true;
+        }
+        return false;
+    }
+    
 #endif
 #endregion Editor Code
 }
