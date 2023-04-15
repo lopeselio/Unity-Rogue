@@ -8,6 +8,11 @@ public class RoomNodeGraphEditor : EditorWindow
     private GUIStyle roomNodeStyle;
     private GUIStyle roomNodeSelectedStyle;
     private static RoomNodeGraphSO currentRoomNodeGraph;
+
+    private Vector2 graphOffset;
+    private Vector2 graphDrag;
+
+
     private RoomNodeSO currentRoomNode = null;
     private RoomNodeTypeListSO roomNodeTypeList;
 
@@ -21,6 +26,9 @@ public class RoomNodeGraphEditor : EditorWindow
     private const float connectingLineWidth = 3f;
     private const float connectingLineArrowSize = 6f;
 
+    // Connecting Line Values
+    private const float gridLarge = 100f;
+    private const float gridSmall = 25f;
 
 
     [MenuItem("Room Node Graph Editor", menuItem = "Window/Dungeon Editor/Room Node Graph Editor")]
@@ -120,6 +128,9 @@ public class RoomNodeGraphEditor : EditorWindow
     }
     private void ProcessEvents(Event currentEvent)
     {
+        // Reset Graph Drag
+        graphDrag = Vector2.zero;
+        
         // get room node that mouse is over and if it is null or not currently being dragged
         if (currentRoomNode == null || currentRoomNode.isLeftClickDragging == false)
         {
@@ -411,6 +422,12 @@ public class RoomNodeGraphEditor : EditorWindow
         if (currentEvent.button == 1)
         {
             ProcessRightMouseDragEvent(currentEvent);
+        }
+
+        // process left click drag event - drag node graph 
+        else if (currentEvent.button == 0)
+        {
+            ProcessLeftMouseDragEvent(currentEvent.delta);
         }
     }
 
