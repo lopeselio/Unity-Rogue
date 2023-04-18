@@ -140,6 +140,13 @@ public class RoomNodeGraphEditor : EditorWindow
         {
             Handles.DrawLine(new Vector3(gridSize * i, -gridSize, 0) + gridOffset, new Vector3(gridSize * i, position.height + gridSize, 0f) + gridOffset); 
         }
+
+        for (int j= 0; j< horizontalLineCount; j++)
+        {
+            Handles.DrawLine(new Vector3(-gridSize, gridSize * j, 0) + gridOffset, new Vector3(position.width + gridSize, gridSize * j, 0f) + gridOffset);
+        }
+
+        Handles.color = Color.white;
     }
 
     private void DrawDraggedLine()
