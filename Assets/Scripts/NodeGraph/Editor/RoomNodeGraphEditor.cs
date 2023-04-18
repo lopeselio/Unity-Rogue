@@ -99,6 +99,10 @@ public class RoomNodeGraphEditor : EditorWindow
         // if scriptable object of type RoomNodeGraphSO has been selected then process
         if (currentRoomNodeGraph != null)
         {
+            // Draw Grid 
+            DrawBackgroundGrid(gridSmall, 0.2f, Color.gray);
+            DrawBackgroundGrid(gridLarge, 0.3f, Color.gray);
+
             // Draw dragged lined if being dragged
             DrawDraggedLine();
 
@@ -115,6 +119,26 @@ public class RoomNodeGraphEditor : EditorWindow
         if (GUI.changed)
         {
             Repaint();
+        }
+    }
+
+    /// <summary>
+    /// Draw a background grid for the room node grapH editor
+    /// </summary>
+    private void DrawBackgroundGrid(float gridSize, float gridOpacity, Color gridColor)
+    {
+        int verticalLineCount = Mathf.CeilToInt((position.width + gridSize) / gridSize);
+        int horizontalLineCount = Mathf.CeilToInt((position.height + gridSize) / gridSize);
+
+        Handles.color = new Color(gridColor.r, gridColor.g, gridColor.b, gridOpacity);
+
+        graphOffset += graphDrag * 0.5f;
+
+        Vector3 gridOffset = new Vector3(graphOffset.x % gridSize, graphOffset.y % gridSize, 0);
+
+        for(int i = 0; i < verticalLineCount; i++)
+        {
+            Handles.DrawLine(new Vector3(gridSize * i, -gridSize, 0) + gridOffset, new Vector3(gridSize * i, position.height + gridSize, 0f) + gridOffset); 
         }
     }
 
@@ -442,6 +466,22 @@ public class RoomNodeGraphEditor : EditorWindow
             GUI.changed = true;
         }
     }
+
+    /// <summary>
+    /// Process left mouse drag event - drag room node graph
+    /// </summary>
+    private void ProcessLeftMouseDragEvent(Vector2 dragDelta)
+    {
+        graphDrag = dragDelta;
+
+        for (int i =0; i < currentRoomNodeGraph.roomNodeList.Count; i++)
+        {
+            currentRoomNodeGraph.roomNodeList[i].DragNode(dragDelta);
+        }
+
+        GUI.changed = true;
+    }
+
 
     /// <summary>
     /// Draf connecting line from room node
